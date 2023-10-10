@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:admin/screens/listing_screen.dart';
+import 'package:admin/screens/category_screen.dart';
 import 'package:admin/screens/order_screen.dart';
+import 'package:admin/screens/product_screen.dart';
 import 'package:admin/screens/rider_screen.dart';
 import 'package:admin/screens/user_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,15 +33,26 @@ class _SideMenuState extends State<SideMenu> {
           _selectedScreen = const DashBoardScreen();
         });
         break;
+      case OrderScreen.id:
+        setState(() {
+          _selectedScreen = const OrderScreen();
+        });
+        break;
 
       case CustomerScreen.id:
         setState(() {
           _selectedScreen = const CustomerScreen();
         });
         break;
-      case ListingScreen.id:
+      case CategoryScreen.id:
         setState(() {
-          _selectedScreen = const ListingScreen();
+          _selectedScreen = const CategoryScreen();
+        });
+
+        break;
+      case ProductScreen.id:
+        setState(() {
+          _selectedScreen = const ProductScreen();
         });
         break;
 
@@ -120,7 +132,7 @@ class _SideMenuState extends State<SideMenu> {
             },
           ),
         ],
-        title: const Text('DeTrash Admin'),
+        title: const Text('Orchids Admin'),
       ),
       sideBar: SideBar(
         items: const [
@@ -129,38 +141,30 @@ class _SideMenuState extends State<SideMenu> {
             route: DashBoardScreen.id,
             icon: Icons.dashboard,
           ),
-
           AdminMenuItem(
             title: 'Users',
             route: CustomerScreen.id,
             icon: IconlyLight.user2,
           ),
           AdminMenuItem(
-            title: 'Listing',
-            route: ListingScreen.id,
+            title: 'Category',
+            route: CategoryScreen.id,
             icon: Icons.shopping_bag_outlined,
+          ),
+          AdminMenuItem(
+            title: 'Product',
+            route: ProductScreen.id,
+            icon: Icons.production_quantity_limits,
           ),
           AdminMenuItem(
               title: 'Orders',
               route: OrderScreen.id,
               icon: Icons.shopping_bag_outlined),
-
-          // AdminMenuItem(
-          //   title: 'Vendor Report ',
-          //   route: VendorReport.id,
-          //   // icon: IconlyLight.addUser,
-          //   icon: Icons.calendar_month,
-          // ),
           AdminMenuItem(
             title: 'Rider',
             route: RiderScreen.id,
             icon: Icons.motorcycle,
           ),
-          // AdminMenuItem(
-          //   title: 'Rider Report',
-          //   route: RiderReport.id,
-          //   icon: Icons.calendar_month_outlined,
-          // ),
         ],
         selectedRoute: '/',
         onSelected: (item) {

@@ -1,12 +1,9 @@
-import 'dart:html';
-
 import 'package:admin/services/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
-import '../delivery/delivery_boy_list.dart';
+
 import 'order_detail_box.dart';
 
 class OrderData extends StatefulWidget {
@@ -24,14 +21,13 @@ class _OrderDataState extends State<OrderData> {
     FirebaseServices _services = FirebaseServices();
     return StreamBuilder<QuerySnapshot>(
         stream: _services.orders
-            .where('orderType', isEqualTo: 'Delivery')
             .where('date', isEqualTo: time)
-            .orderBy('timeStamp', descending: true)
+            .orderBy('createdAt', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
+            print(snapshot.error.toString());
             return const Text('Something went Wrong');
-            // print(snapshot.error.toString());
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const LinearProgressIndicator();
@@ -44,11 +40,8 @@ class _OrderDataState extends State<OrderData> {
                 return Row(
                   children: [
                     _userData(flex: 1, widget: Text((index + 1).toString())),
-
                     _userData(flex: 1, text: data['userName']),
                     _userData(flex: 1, text: data['orderId'].toString()),
-
-                    _userData(flex: 1, text: data['seller']['shopName']),
                     Expanded(
                         flex: 1,
                         child: Container(
@@ -64,83 +57,10 @@ class _OrderDataState extends State<OrderData> {
                                     fontSize: 15, color: Colors.white),
                               )),
                         )),
-
                     _userData(
                         flex: 1,
                         text: DateFormat()
-                            .format(DateTime.parse(data['timeStamp']))),
-                    // if (document['deliveryBoy']['name'].length > 2)
-
-                    _userData(flex: 1, text: data['deliveryBoy']['name']),
-
-                    _userData(
-                        flex: 1,
-                        widget: data['deliveryBoy']['name'].length == 0
-                            ? ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.blue)),
-                                onPressed: () {
-                                  if (data['orderStatus'] == 'Ordered') {
-                                    alertDialog(
-                                        context: context,
-                                        title: 'Order Update',
-                                        content:
-                                            'Ask Vendor to Prepare the Order');
-                                  } else if (data['orderStatus'] ==
-                                      'Preparing') {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return DeliveryBoysList(
-                                            data,
-                                            data['seller']['sellerId'],
-                                          );
-                                        });
-                                  } else {
-                                    alertDialog(
-                                        context: context,
-                                        title: 'Order Update',
-                                        content: 'Already Appointed the rider');
-                                  }
-                                },
-                                child: const Text(
-                                  'Appoint Rider',
-                                  style: TextStyle(color: Colors.white),
-                                ))
-                            : ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.red)),
-                                onPressed: () {
-                                  if (data['orderStatus'] == 'Ordered') {
-                                    alertDialog(
-                                        context: context,
-                                        title: 'Order Update',
-                                        content:
-                                            'Ask Vendor to Prepare the Order');
-                                  } else if (data['orderStatus'] ==
-                                          'Preparing' ||
-                                      data['orderStatus'] ==
-                                          'Rider Appointed') {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return DeliveryBoysList(
-                                            data,
-                                            data['seller']['sellerId'],
-                                          );
-                                        });
-                                  } else {
-                                    alertDialog(
-                                        context: context,
-                                        title: 'Order Update',
-                                        content: 'Already Appointed the rider');
-                                  }
-                                },
-                                child: const Text('Change Rider',
-                                    style: TextStyle(color: Colors.white)))),
-
+                            .format(DateTime.parse(data['createdAt']))),
                     _userData(
                         flex: 1,
                         widget: ElevatedButton(

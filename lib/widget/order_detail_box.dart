@@ -37,10 +37,11 @@ class _OrderDetailBoxState extends State<OrderDetailBox> {
     return StreamBuilder<QuerySnapshot>(
         stream: _services.orders
             .where('userId', isEqualTo: widget.userId)
-            .orderBy('timeStamp', descending: true)
+            .orderBy('createdAt', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
+            print(snapshot.error.toString());
             return const Center(
               child: Text('Something Went Wrong'),
             );
@@ -121,7 +122,7 @@ class _OrderDetailBoxState extends State<OrderDetailBox> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     subtitle: Text(
-                                      'On ${DateFormat().format(DateTime.parse(data['timeStamp']))}',
+                                      'On ${DateFormat().format(DateTime.parse(data['createdAt']))}',
                                       style: const TextStyle(fontSize: 12),
                                     ),
                                     trailing: Column(
@@ -129,12 +130,12 @@ class _OrderDetailBoxState extends State<OrderDetailBox> {
                                           CrossAxisAlignment.end,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text(
-                                          'Order Type : ${data['orderType']}',
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                        // Text(
+                                        //   'Order Type : ${data['orderType']}',
+                                        //   style: const TextStyle(
+                                        //       fontSize: 12,
+                                        //       fontWeight: FontWeight.bold),
+                                        // ),
                                         const SizedBox(
                                           height: 5,
                                         ),
@@ -170,7 +171,7 @@ class _OrderDetailBoxState extends State<OrderDetailBox> {
                                                     fontWeight:
                                                         FontWeight.bold)),
                                             Text(
-                                              '${_customer!['Name']}',
+                                              '${_customer!['name']}',
                                               style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
@@ -180,14 +181,6 @@ class _OrderDetailBoxState extends State<OrderDetailBox> {
                                         SizedBox(
                                           height: 8,
                                         ),
-                                        data['customerMessage'] != ''
-                                            ? Text(
-                                                'Customer Message ${data['customerMessage']}',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.bold))
-                                            : Text('')
                                       ],
                                     ),
                                     subtitle: Text(
@@ -328,10 +321,10 @@ class _OrderDetailBoxState extends State<OrderDetailBox> {
                                               backgroundColor: Colors.white,
                                               child: Image.network(
                                                   data['products'][index]
-                                                      ['thumbnailUrl']),
+                                                      ['productImage']),
                                             ),
                                             title: Text(data['products'][index]
-                                                ['title']),
+                                                ['productName']),
                                             subtitle: Text(
                                               '${data['products'][index]['qty']} x ${data['products'][index]['price'].toStringAsFixed(0)} = ${data['products'][index]['total'].toStringAsFixed(0)}',
                                               style: const TextStyle(
@@ -357,28 +350,28 @@ class _OrderDetailBoxState extends State<OrderDetailBox> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: Column(
                                               children: [
-                                                Row(
-                                                  children: [
-                                                    const Text(
-                                                      'Seller :',
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 7,
-                                                    ),
-                                                    Text(
-                                                      data['seller']
-                                                          ['shopName'],
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  ],
-                                                ),
+                                                // Row(
+                                                //   children: [
+                                                //     const Text(
+                                                //       'Seller :',
+                                                //       style: TextStyle(
+                                                //           color: Colors.black,
+                                                //           fontWeight:
+                                                //               FontWeight.bold),
+                                                //     ),
+                                                //     const SizedBox(
+                                                //       width: 7,
+                                                //     ),
+                                                //     Text(
+                                                //       data['seller']
+                                                //           ['shopName'],
+                                                //       style: const TextStyle(
+                                                //           color: Colors.white,
+                                                //           fontWeight:
+                                                //               FontWeight.bold),
+                                                //     )
+                                                //   ],
+                                                // ),
                                                 const SizedBox(
                                                   height: 10,
                                                 ),
@@ -461,36 +454,7 @@ class _OrderDetailBoxState extends State<OrderDetailBox> {
                                                 // : 0, //Number
                                                 // data['surCharge'] > 0
                                                 //     ?
-                                                (snapshot.data!.docs[index]
-                                                                .data() as Map)[
-                                                            'surCharge'] !=
-                                                        null
-                                                    // data['surCharge'] > 0
-                                                    ? Row(
-                                                        children: [
-                                                          const Text(
-                                                            'Sur Charge :',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 12),
-                                                          ),
-                                                          Text(
-                                                            '${data['surCharge'] ?? 0}',
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 12),
-                                                          )
-                                                        ],
-                                                      )
-                                                    : SizedBox(),
+
                                                 const SizedBox(
                                                   height: 10,
                                                 ),
@@ -524,11 +488,6 @@ class _OrderDetailBoxState extends State<OrderDetailBox> {
                                 ])),
                           );
                         },
-                        // children: snapshot.data!.docs
-                        //     .map((DocumentSnapshot document) {
-                        //   Map<String, dynamic> data =
-                        //       document.data()! as Map<String, dynamic>;
-                        // }).toList(),
                       ))
                 ],
               ),

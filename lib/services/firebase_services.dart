@@ -2,7 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseServices {
+  CollectionReference category =
+      FirebaseFirestore.instance.collection('categories');
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference products =
+      FirebaseFirestore.instance.collection('products');
   CollectionReference listing =
       FirebaseFirestore.instance.collection('listing');
   CollectionReference orders = FirebaseFirestore.instance.collection('orders');

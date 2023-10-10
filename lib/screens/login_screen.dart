@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: TextButton(
                                       style: TextButton.styleFrom(
                                         primary: Colors.white,
-                                        backgroundColor: Colors.green,
+                                        backgroundColor: kPrimaryColor,
                                         onSurface: Colors.grey,
                                       ),
                                       onPressed: () async {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../widget/order_data.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _OrderScreenState extends State<OrderScreen> {
           children: [
             const Center(
               child: Text(
-                'Today Delivery Orders',
+                'Today Orders',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
               ),
             ),
@@ -36,8 +37,6 @@ class _OrderScreenState extends State<OrderScreen> {
                 _rowHeader(flex: 1, text: 'Order From'),
                 _rowHeader(flex: 1, text: 'Order Status'),
                 _rowHeader(flex: 1, text: 'Order Time'),
-                _rowHeader(flex: 1, text: 'Rider name'),
-                _rowHeader(flex: 1, text: 'Appoint Rider'),
                 _rowHeader(flex: 1, text: 'View More'),
               ],
             ),
